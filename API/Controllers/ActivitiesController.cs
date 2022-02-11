@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Application.Activities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
