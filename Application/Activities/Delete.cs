@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using System;
+using Application.Core;
 using MediatR;
 using Persistence;
-using Application.Core;
 
 namespace Application.Activities
 {
@@ -28,9 +26,9 @@ namespace Application.Activities
             {
                 var activity = await _context.Activities.FindAsync(request.Id);
 
-                if (activity == null) return null;
+                // if (activity == null) return null;
 
-                 _context.Remove(activity);
+                _context.Remove(activity);
 
                 var result = await _context.SaveChangesAsync() > 0;
 

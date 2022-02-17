@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-
-using MediatR;
 using Application.Core;
-using Persistence;
 using Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using Domain;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.Activities
 {
@@ -38,10 +36,10 @@ namespace Application.Activities
 
                 if (activity == null) return null;
 
-                var user = await _context.Users.FirstOrDefaultAsync(x =>
+                var user = await _context.Users.FirstOrDefaultAsync(x => 
                     x.UserName == _userAccessor.GetUsername());
 
-                if (user == null) return null;          
+                if (user == null) return null;
 
                 var hostUsername = activity.Attendees.FirstOrDefault(x => x.IsHost)?.AppUser?.UserName;
 

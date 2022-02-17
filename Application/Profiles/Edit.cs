@@ -30,7 +30,6 @@ namespace Application.Profiles
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _userAccessor;
-
             public Handler(DataContext context, IUserAccessor userAccessor)
             {
                 _userAccessor = userAccessor;
@@ -39,14 +38,17 @@ namespace Application.Profiles
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
-
+                var user = await _context.Users.FirstOrDefaultAsync(x => 
+                    x.UserName == _userAccessor.GetUsername());
+                
                 user.Bio = request.Bio ?? user.Bio;
                 user.DisplayName = request.DisplayName ?? user.DisplayName;
 
+                _context.Entry(user).State = EntityState.Modified;
+
                 var success = await _context.SaveChangesAsync() > 0;
 
-                if(success) return Result<Unit>.Success(Unit.Value);
+                if (success) return Result<Unit>.Success(Unit.Value);
 
                 return Result<Unit>.Failure("Problem updating profile");
             }

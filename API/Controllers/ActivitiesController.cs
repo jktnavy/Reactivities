@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Persistence;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Domain;
-using Microsoft.EntityFrameworkCore;
 using Application.Activities;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
@@ -21,8 +15,8 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new List.Query()));
         }
 
-        [HttpGet("{id}")] // endpoint --> activities/id
-        public async Task<IActionResult> GetActivity(Guid id) 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetActivity(Guid id)
         {
             return HandleResult(await Mediator.Send(new Details.Query{Id = id}));
         }
@@ -53,6 +47,5 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UpdateAttendance.Command{Id = id}));
         }
-        
     }
 }

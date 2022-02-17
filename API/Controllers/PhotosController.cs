@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Application.Photos;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
@@ -27,6 +23,5 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new SetMain.Command{Id = id}));
         }
-
     }
 }

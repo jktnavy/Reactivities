@@ -1,20 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Application.Activities;
+using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
+using Infrastructure.Photos;
+using Infrastructure.Security;
 using MediatR;
-using Persistence;
-using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-
-using Application.Core;
-using Application.Activities;
-using Application.Interfaces;
-using Infrastructure.Security;
-using Infrastructure.Photos;
+using Microsoft.OpenApi.Models;
+using Persistence;
 
 namespace API.Extensions
 {
@@ -27,9 +22,9 @@ namespace API.Extensions
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
-            services.AddDbContext<DataContext>(opt =>
+            services.AddDbContext<DataContext>(opt => 
             {
-               opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
             services.AddCors(opt => 
             {

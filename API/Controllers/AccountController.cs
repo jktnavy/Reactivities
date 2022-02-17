@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Domain;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Services;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -22,8 +19,8 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly TokenService _tokenService;
-        public AccountController(UserManager<AppUser> userManager, 
-            SignInManager<AppUser> signInManager, TokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager, TokenService tokenService)
         {
             _tokenService = tokenService;
             _signInManager = signInManager;
@@ -54,13 +51,11 @@ namespace API.Controllers
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
                 ModelState.AddModelError("email", "Email taken");
-                // return BadRequest(ModelState);
                 return ValidationProblem();
             }
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
             {
                 ModelState.AddModelError("username", "Username taken");
-                // return BadRequest(ModelState);
                 return ValidationProblem();
             }
 
@@ -68,7 +63,7 @@ namespace API.Controllers
             {
                 DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,
-                UserName = registerDto.Username,
+                UserName = registerDto.Username
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);

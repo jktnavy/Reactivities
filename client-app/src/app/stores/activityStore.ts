@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Activity, ActivityFormValues } from "../models/activity";
-import { format } from 'date-fns';
+import {format} from 'date-fns';
 import { store } from "./store";
 import { Profile } from "../models/profile";
 
@@ -17,7 +17,7 @@ export default class ActivityStore {
     }
 
     get activitiesByDate() {
-        return Array.from(this.activityRegistry.values()).sort((a, b) => 
+        return Array.from(this.activityRegistry.values()).sort((a, b) =>
             a.date!.getTime() - b.date!.getTime());
     }
 
@@ -34,7 +34,7 @@ export default class ActivityStore {
     loadActivities = async () => {
         this.loadingInitial = true;
         try {
-            const activities = await agent.Activities.list();            
+            const activities = await agent.Activities.list();
             activities.forEach(activity => {
                 this.setActivity(activity);
             })
@@ -45,7 +45,7 @@ export default class ActivityStore {
         }
     }
 
-    loadActivity = async (id:string) => {
+    loadActivity = async (id: string) => {
         let activity = this.getActivity(id);
         if (activity) {
             this.selectedActivity = activity;
@@ -76,11 +76,11 @@ export default class ActivityStore {
             activity.isHost = activity.hostUsername === user.username;
             activity.host = activity.attendees?.find(x => x.username === activity.hostUsername);
         }
-        activity.date = new Date(activity.date!)
+        activity.date = new Date(activity.date!);
         this.activityRegistry.set(activity.id, activity);
     }
 
-    private getActivity = (id:string) => {
+    private getActivity = (id: string) => {
         return this.activityRegistry.get(id);
     }
 
@@ -113,22 +113,21 @@ export default class ActivityStore {
                     let updatedActivity = {...this.getActivity(activity.id), ...activity}
                     this.activityRegistry.set(activity.id, updatedActivity as Activity);
                     this.selectedActivity = updatedActivity as Activity;
-                }
+                } 
             })
         } catch (error) {
             console.log(error);
         }
     }
 
-    deleteActivity =async (id:string) => {
+    deleteActivity = async (id: string) => {
         this.loading = true;
         try {
-            await agent.Activities.delete(id)
+            await agent.Activities.delete(id);
             runInAction(() => {
                 this.activityRegistry.delete(id);
                 this.loading = false;
             })
-
         } catch (error) {
             console.log(error);
             runInAction(() => {
@@ -176,8 +175,18 @@ export default class ActivityStore {
         }
     }
 
+    updateAttendeeFollowing = (username: string) => {
+        this.activityRegistry.forEach(activity => {
+            activity.attendees.forEach(attendee => {
+                if (attendee.username === username) {
+                    attendee.following ? attendee.followersCount-- : attendee.followersCount++;
+                    attendee.following = !attendee.following;
+                }
+            })
+        })
+    }
+
     clearSelectedActivity = () => {
         this.selectedActivity = undefined;
     }
-    
 }

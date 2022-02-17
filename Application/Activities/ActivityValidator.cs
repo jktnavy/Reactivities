@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentValidation;
 using Domain;
+using FluentValidation;
 
 namespace Application.Activities
 {
@@ -18,6 +14,5 @@ namespace Application.Activities
             RuleFor(x => x.City).NotEmpty();
             RuleFor(x => x.Venue).NotEmpty();
         }
-        
     }
 }

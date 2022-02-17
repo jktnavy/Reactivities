@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Container } from 'semantic-ui-react';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
@@ -32,16 +32,16 @@ function App() {
   if (!commonStore.appLoaded) return <LoadingComponent content='Loading app...' />
 
   return (
-    <Fragment>
+    <>
       <ToastContainer position='bottom-right' hideProgressBar />
       <ModalContainer />
       <Route exact path='/' component={HomePage} />
-      <Route 
+      <Route
         path={'/(.+)'}
         render={() => (
           <>
             <NavBar />
-            <Container style={{marginTop: '7em'}}>
+            <Container style={{ marginTop: '7em' }}>
               <Switch>
                 <Route exact path='/activities' component={ActivityDashboard} />
                 <Route path='/activities/:id' component={ActivityDetails} />
@@ -56,7 +56,7 @@ function App() {
           </>
         )}
       />
-    </Fragment>
+    </>
   );
 }
 

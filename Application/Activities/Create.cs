@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Domain;
-using MediatR;
-using Persistence;
-using FluentValidation;
 using Application.Core;
 using Application.Interfaces;
+using Domain;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.Activities
 {
@@ -37,6 +34,7 @@ namespace Application.Activities
                 _userAccessor = userAccessor;
                 _context = context;
             }
+
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => 
@@ -46,7 +44,7 @@ namespace Application.Activities
                 {
                     AppUser = user,
                     Activity = request.Activity,
-                    IsHost = true,
+                    IsHost = true
                 };
 
                 request.Activity.Attendees.Add(attendee);
@@ -55,7 +53,7 @@ namespace Application.Activities
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if(!result) return Result<Unit>.Failure("Failed to create activity");
+                if (!result) return Result<Unit>.Failure("Failed to create activity");
 
                 return Result<Unit>.Success(Unit.Value);
             }

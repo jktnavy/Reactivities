@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Authorization;
-using Persistence;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 using System;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Infrastructure.Security
 {

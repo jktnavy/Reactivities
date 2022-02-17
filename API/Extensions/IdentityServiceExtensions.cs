@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using API.Services;
+using Domain;
+using Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Domain;
-using Persistence;
-using Microsoft.AspNetCore.Identity;
-using API.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Infrastructure.Security;
-using Microsoft.AspNetCore.Authorization;
+using Persistence;
 
 namespace API.Extensions
 {
@@ -23,7 +20,6 @@ namespace API.Extensions
         {
             services.AddIdentityCore<AppUser>(opt =>
             {
-                // opt is options
                 opt.Password.RequireNonAlphanumeric = false;
             })
             .AddEntityFrameworkStores<DataContext>()
@@ -56,9 +52,9 @@ namespace API.Extensions
                     };
                 });
 
-            services.AddAuthorization(opt => 
+            services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("IsActivityHost", policy => 
+                opt.AddPolicy("IsActivityHost", policy =>
                 {
                     policy.Requirements.Add(new IsHostRequirement());
                 });
